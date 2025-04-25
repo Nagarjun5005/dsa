@@ -54,7 +54,7 @@ public class ValidPalindrome {
         boolean palindromeTwoPointer = isPalindromeTwoPointer(palindrome);
         System.out.println(palindromeTwoPointer);
 
-        boolean palindrome2=isPalindromeTwoPointer(palindrome);
+        boolean palindrome2=isPalindromeLeetCode(palindrome);
         System.out.println(palindrome2);
     }
 

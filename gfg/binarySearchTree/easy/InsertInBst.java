@@ -13,6 +13,11 @@ public class InsertInBst {
           return root;
       }
 
+    public static Node insertNodeIterative(Node root,int x) {
+
+          return root;
+    }
+
 
       public static void main(String[] args) {
           Node root=new Node(10);

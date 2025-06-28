@@ -93,7 +93,7 @@ public class RotateArray {
         int arr[] = {1, 2, 3, 4, 5, 6, 7};
         int k = 3;
 
-        // Test Brute-Force Rotation
+        // Test Brute-Force RotationAdmin
         int[] arr1 = rotateArrayBrute(arr, k);
         System.out.println("Brute Force Rotated Array: " + Arrays.toString(arr1));
 

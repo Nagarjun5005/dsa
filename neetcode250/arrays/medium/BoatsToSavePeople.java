@@ -40,7 +40,7 @@ public class BoatsToSavePeople {
             res++;                          // One boat used
 
             // If the lightest person can also fit in the boat, pair them
-            if (l <= r && remain >= people[l]) {
+            if (l <= r &&  people[l]<=remain) {
                 l++;  // Pair lightest with heaviest
             }
         }

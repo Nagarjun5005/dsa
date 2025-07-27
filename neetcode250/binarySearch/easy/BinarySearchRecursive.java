@@ -1,4 +1,4 @@
-package neetcode250.binarySearch;
+package neetcode250.binarySearch.easy;
 
 /**
  * This class demonstrates a recursive implementation of the Binary Search algorithm.

@@ -1,4 +1,4 @@
-package neetcode250.binarySearch;
+package neetcode250.binarySearch.medium;
 
 public class CountOccurrences {
     public static void main(String[] args) {

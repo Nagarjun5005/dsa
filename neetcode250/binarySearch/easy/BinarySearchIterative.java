@@ -1,4 +1,4 @@
-package neetcode250.binarySearch;
+package neetcode250.binarySearch.easy;
 
 /**
  * This class demonstrates the binary search algorithm on a sorted integer array.

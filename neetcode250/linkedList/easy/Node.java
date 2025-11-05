@@ -16,10 +16,10 @@ package neetcode250.linkedList.easy;
 public class Node {
 
     /** The value stored in this node. */
-    int data;
+    public int data;
 
     /** Reference (pointer) to the next node in the list. */
-    Node next;
+    public Node next;
 
     /**
      * Constructs a new node with the given data.

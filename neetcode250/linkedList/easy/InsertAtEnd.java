@@ -1,5 +1,5 @@
-package neetcode250.linkedList.easy;
-
+package linkedList.easy;
+import neetcode250.linkedList.easy.Node;
 /**
  * Demonstrates how to insert a new node at the end of a singly linked list.
  *

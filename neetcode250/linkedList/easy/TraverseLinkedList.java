@@ -1,8 +1,9 @@
-package neetcode250.linkedList.easy;
-
+package linkedList.easy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import neetcode250.linkedList.easy.Node;
 
 /**
  * Demonstrates different ways to traverse a singly linked list.

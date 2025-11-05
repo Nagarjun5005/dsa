@@ -1,5 +1,5 @@
-package neetcode250.linkedList.easy;
-
+package linkedList.easy;
+import neetcode250.linkedList.easy.Node;
 /**
  * Demonstrates how to insert a node at a specific index (position)
  * in a singly linked list.

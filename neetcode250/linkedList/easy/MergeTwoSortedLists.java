@@ -6,8 +6,11 @@ import neetcode250.linkedList.easy.Node;
  * Program: Merge Two Sorted Linked Lists
  * ---------------------------------------------------------------
  * Description:
- * Given two sorted linked lists, merge them into one sorted linked list
- * and return its head.
+ *
+ *
+ *
+ *
+ *
  *
  * Example:
  * list1: 1 → 3 → 5

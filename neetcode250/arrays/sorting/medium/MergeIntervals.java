@@ -63,6 +63,15 @@ public class MergeIntervals {
         for (int[] interval : optimalMerged) {
             System.out.println(Arrays.toString(interval));
         }
+
+        //LEETCODE Solution
+
+        int [][] leetCodeSolution=mergeIntervalsLeetSol(intervals);
+        System.out.println("OPTIMAL RESULT LEETCODE SOLUTION:");
+        for (int[] interval : leetCodeSolution) {
+            System.out.println(Arrays.toString(interval));
+        }
+
     }
 
 
@@ -185,4 +194,91 @@ public class MergeIntervals {
 
         return result.toArray(new int[result.size()][]);
     }
+
+    /**
+     * Merge Intervals – Optimal LeetCode Solution
+     * -------------------------------------------
+     *
+     * This method takes an array of intervals and merges all overlapping
+     * intervals into one. It returns a new list of disjoint intervals.
+     *
+     * Example:
+     * Input:
+     *   [[1,3],[2,6],[8,10],[15,18]]
+     * Output:
+     *   [[1,6],[8,10],[15,18]]
+     *
+     * APPROACH:
+     * 1.  Sort the intervals by their start time.
+     *     Sorting ensures that all intervals with potential overlap
+     *     appear next to each other.
+     *
+     * 2.  Maintain a reference interval called `prev`
+     *     which represents the last merged interval.
+     *
+     * 3.  Iterate through all intervals from index 1 onward:
+     *
+     *        - If the current interval overlaps with `prev`:
+     *              (i.e., current.start <= prev.end)
+     *              → merge by updating prev.end = max(prev.end, current.end)
+     *
+     *        - Else:
+     *              No overlap exists.
+     *              → Add `prev` to result list.
+     *              → Move `prev` pointer to current interval.
+     *
+     * 4.  After the loop ends, add the final `prev` interval to the result.
+     *
+     *
+     * OVERLAP CONDITION:
+     *   Let prev = [p_start, p_end]
+     *   Let interval = [i_start, i_end]
+     *
+     *   They overlap if:
+     *         i_start <= p_end
+     *
+     *
+     * TIME COMPLEXITY:
+     *    Sorting:  O(n log n)
+     *    Merge pass: O(n)
+     *    Total:  O(n log n)
+     *
+     * SPACE COMPLEXITY:
+     *    O(n) for output list
+     *
+     *
+     * @param intervals   A 2D array of intervals [start, end]
+     * @return            A merged list of intervals as an int[][]
+     */
+    public static int[][] mergeIntervalsLeetSol(int[][] intervals) {
+
+        // Step 1: Sort intervals by start time
+        Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
+
+        List<int[]> merged = new ArrayList<>();
+
+        // Step 2: First interval becomes the initial "prev"
+        int[] prev = intervals[0];
+
+        // Step 3: Iterate through remaining intervals
+        for (int i = 1; i < intervals.length; i++) {
+            int[] interval = intervals[i];
+
+            // Case 1: Overlapping intervals → merge
+            if (interval[0] <= prev[1]) {
+                prev[1] = Math.max(prev[1], interval[1]);
+            }
+            // Case 2: No overlap → finalize prev and move forward
+            else {
+                merged.add(prev);
+                prev = interval;
+            }
+        }
+
+        // Step 4: Add the final interval
+        merged.add(prev);
+
+        return merged.toArray(new int[merged.size()][]);
+    }
+
 }

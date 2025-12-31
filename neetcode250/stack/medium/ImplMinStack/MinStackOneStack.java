@@ -100,4 +100,37 @@ public class MinStackOneStack {
     public int getMax() {
         return stack.peek()[2];
     }
+
+
+    /**
+     * Main method to demonstrate and test MinStack operations.
+     *
+     * @param args command-line arguments
+     */
+    public static void main(String[] args) {
+
+        MinStackOneStack minStackObj = new MinStackOneStack();
+
+        minStackObj.push(5);
+        minStackObj.push(3);
+        minStackObj.push(7);
+        minStackObj.push(3);
+
+        System.out.println("Max of the stack-->"+minStackObj.getMax());
+
+        System.out.println("Top: " + minStackObj.top());      // 3
+        System.out.println("Min: " + minStackObj.getMin());   // 3
+
+        minStackObj.pop(); // removes 3
+        System.out.println("Min after pop: " + minStackObj.getMin()); // 3
+
+        minStackObj.pop(); // removes 7
+        System.out.println("Min after pop: " + minStackObj.getMin()); // 3
+
+        minStackObj.pop(); // removes 3
+        System.out.println("Min after pop: " + minStackObj.getMin()); // 5
+
+        System.out.println("Max of the stack-->"+minStackObj.getMax());
+
+    }
 }

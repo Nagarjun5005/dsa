@@ -1,39 +1,107 @@
 package arrays.hashing.medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ =============================================================================
+ PROBLEM:
+ Sort Characters By Frequency
+
+ Given a string s, sort it in decreasing order based on the frequency
+ of characters. Characters with higher frequency should appear first.
+ If two characters have the same frequency, their relative order
+ does NOT matter.
+
+ Example:
+ Input:  "tree"
+ Output: "eetr" or "eert"
+ =============================================================================
+*/
 
 public class SortCharactersByFrequency {
-    public static void main(String[] args) {
-              String s ="nagarjun";
-        System.out.println(frequencySortBrute(s));
-        System.out.println(frequencySortBrute(s));
-    }
 
-    public static String frequencySortBrute(String s) {
-        boolean [] visted=new boolean[s.length()];
-        List<char[]> list = new ArrayList<>();
-       for(int i=0;i<s.length();i++){
-           if(visted[i]){
-               continue;
-           }
-           int count=0;
-           for(int j=0;j<s.length();j++){
-               if(s.charAt(i)==s.charAt(j)){
-                   count++;
-                   visted[j]=true;
-               }
-           }
-           list.add(new char[]{s.charAt(i), (char) count});
+    /*
+     =========================================================================
+     APPROACH: BRUTE FORCE (NESTED LOOPS + SORTING)
 
-       }
-        list.sort((a,b)->b[1]-a[1]);
+     IDEA:
+     - Traverse the string character by character
+     - For each character, count how many times it appears using another loop
+     - Use a boolean[] visited array to avoid counting the same character again
+     - Store each unique character along with its frequency
+     - Sort characters by frequency in descending order
+     - Build the result string by repeating each character according to
+       its frequency
 
-        StringBuilder result=new StringBuilder();
+     IMPORTANT NOTES:
+     - No HashMap is used
+     - No Bucket Sort is used
+     - This approach is intentionally inefficient and serves as a baseline
 
-        for (char [] pair:list){
-            char ch=pair[0];
-            int freq=pair[1];
-            for(int i=0;i<freq;i++){
+     TIME COMPLEXITY:
+     - Frequency counting using nested loops: O(n²)
+     - Sorting unique characters: O(u log u)
+       where u = number of unique characters
+     - Overall: O(n²)
+
+     SPACE COMPLEXITY:
+     - visited array + list storage: O(n)
+     =========================================================================
+    */
+    public static String frequencySortBruteForce(String s) {
+
+        // visited[i] = true means character at index i is already counted
+        boolean[] visited = new boolean[s.length()];
+
+        /*
+         List to store character-frequency pairs
+         Each element is:
+         pair[0] -> character
+         pair[1] -> frequency (stored as int)
+        */
+        List<int[]> list = new ArrayList<>();
+
+        // Outer loop: pick a character
+        for (int i = 0; i < s.length(); i++) {
+
+            // Skip if this character was already counted
+            if (visited[i]) {
+                continue;
+            }
+
+            int count = 0;
+
+            // Inner loop: count frequency of s.charAt(i)
+            for (int j = 0; j < s.length(); j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    count++;
+                    visited[j] = true;
+                }
+            }
+
+            // Store character and its frequency
+            list.add(new int[]{s.charAt(i), count});
+        }
+
+        /*
+         Sort list by frequency in descending order
+         pair[1] represents frequency
+        */
+        list.sort((a, b) -> b[1] - a[1]);
+
+        // Build the result string
+        StringBuilder result = new StringBuilder();
+
+        /*
+         For each character-frequency pair,
+         append the character "frequency" number of times
+        */
+        for (int[] pair : list) {
+            char ch = (char) pair[0];
+            int freq = pair[1];
+
+            for (int i = 0; i < freq; i++) {
                 result.append(ch);
             }
         }
@@ -41,34 +109,17 @@ public class SortCharactersByFrequency {
         return result.toString();
     }
 
-    public static String frequencySort(String s) {
-        Map<Character, Integer> count=new HashMap<>();
-        List<Character>[] freq=new List[s.length()+1];
+    /*
+     =========================================================================
+     MAIN METHOD (TESTING)
 
-        //initialize the buckets
-        for(int i=0;i<freq.length;i++){
-            freq[i]=new ArrayList<>();
-        }
+     Demonstrates brute-force character frequency sorting
+     =========================================================================
+    */
+    public static void main(String[] args) {
 
-        //count the frequencies
-        for(int i =0;i<s.length();i++){
-            count.put(s.charAt(i),count.getOrDefault(s.charAt(i),0)+1);
-        }
-
-        //lets form the bucket
-        for(Map.Entry<Character, Integer> entry:count.entrySet()){
-            freq[entry.getValue()].add(entry.getKey());
-        }
-        StringBuilder result=new StringBuilder();
-        for(int i=freq.length-1;i>0 ;i--){
-          for (Character c : freq[i]) {
-              for(int j=0;j<i;j++){
-                  result.append(c);
-              }
-            }
-
-        }
-        return result.toString();
-
+        System.out.println(frequencySortBruteForce("tree"));
+        System.out.println(frequencySortBruteForce("cccaaa"));
+        System.out.println(frequencySortBruteForce("Aabb"));
     }
 }

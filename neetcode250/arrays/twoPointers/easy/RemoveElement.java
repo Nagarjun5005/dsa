@@ -23,15 +23,15 @@ package arrays.twoPointers.easy;
  *
  * APPROACH: Two Pointers (Read–Write / Slow–Fast)
  * ------------------------------------------------
- * - Use one pointer `i` to read each element in the array.
- * - Use another pointer `k` to track the position where the
+ * - Use one pointer `fast` to read each element in the array.
+ * - Use another pointer `fast` to track the position where the
  *   next valid element (not equal to `val`) should be written.
  *
- * - When nums[i] != val:
- *      → copy nums[i] to nums[k]
- *      → increment k
+ * - When nums[fast] != val:
+ *      → copy nums[slow] to nums[fast]
+ *      → increment slow
  *
- * - At the end, `k` represents the number of elements
+ * - At the end, `slow` represents the number of elements
  *   not equal to `val`.
  *
  *
@@ -55,7 +55,7 @@ public class RemoveElement {
 
     public static void main(String[] args) {
 
-        int[] nums = {3, 2, 2, 3};
+        int[] nums = {0,1,2,2,3,0,4,2};
         int val = 3;
 
         int newLength = removeElement(nums, val);
@@ -77,20 +77,20 @@ public class RemoveElement {
     public static int removeElement(int[] nums, int val) {
 
         // Pointer to track the position for valid elements
-        int k = 0;
+        int slow = 0;
 
         // Traverse the array
-        for (int i = 0; i < nums.length; i++) {
+        for (int fast = 0; fast < nums.length; fast++) {
 
             // If current element is not equal to val,
-            // copy it to the k-th position
-            if (nums[i] != val) {
-                nums[k] = nums[i];
-                k++;
+            // copy it to the slow-th position
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
             }
         }
 
-        // k represents the new length of the array
-        return k;
+        // slow represents the new length of the array
+        return slow;
     }
 }

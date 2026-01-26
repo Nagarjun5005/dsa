@@ -15,6 +15,8 @@ public class ThreeSum {
 
     }
 
+
+
     /**
      * Solves the 3Sum problem using the brute-force approach (three nested loops).
      * Finds all unique triplets in the array which sum to zero.
@@ -25,6 +27,9 @@ public class ThreeSum {
      * @return A list of lists containing unique triplets that sum to zero.
      */
     public static List<List<Integer>> threeSumBrute(int[] nums) {
+
+        //create a result output
+        List<List<Integer>>answer=new ArrayList<>();
         // Create a set to store unique triplets
         Set<List<Integer>> res = new HashSet<>();
 
@@ -48,7 +53,10 @@ public class ThreeSum {
         }
 
         // Convert the set of triplets into a list to match the expected return type
-        return new ArrayList<>(res);
+        for(List<Integer>val:res){
+            answer.add(val);
+        }
+        return answer;
     }
 
 

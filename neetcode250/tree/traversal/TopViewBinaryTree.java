@@ -1,4 +1,4 @@
-package tree.medium;
+package tree.traversal;
 
 import tree.TreeNode;
 import java.util.*;

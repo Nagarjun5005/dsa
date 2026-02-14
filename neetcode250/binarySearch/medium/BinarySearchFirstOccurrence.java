@@ -1,4 +1,4 @@
-package neetcode250.binarySearch.medium;
+package binarySearch.medium;
 
 /**
  * This class demonstrates how to find the first occurrence of a target

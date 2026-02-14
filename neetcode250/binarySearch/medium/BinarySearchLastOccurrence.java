@@ -1,4 +1,4 @@
-package neetcode250.binarySearch.medium;
+package binarySearch.medium;
 
 /**
  * This class finds the last occurrence of a given target

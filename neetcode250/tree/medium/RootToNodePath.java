@@ -1,130 +1,153 @@
 package tree.medium;
 
 import tree.TreeNode;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
- * RootToNodePath demonstrates how to find the path
- * from root to a given target node in a Binary Tree.
+ * RootToNodePath
  *
- * -------------------------------------------------------
+ * ------------------------------------------------------------
  * Problem:
- * Given a binary tree and a target value,
+ * Given a Binary Tree and a target value,
  * return the path from root to that target node.
  *
- * Example:
+ * Since a tree has a unique path from root to any node,
+ * once we find the target, we can reconstruct that path.
  *
- *              1
- *            /   \
- *           2     3
- *         /  \   /  \
- *        4    5 6    7
+ * ------------------------------------------------------------
+ * This class contains two approaches:
  *
- * Target = 7
- * Output = [1, 3, 7]
+ * 1️⃣ Brute Force (Recursive DFS + Backtracking)
+ * 2️⃣ BFS (Queue + Parent Map)
  *
- * -------------------------------------------------------
- * Approach:
- * This problem is solved using:
- *
- *      DFS (Depth First Search) + Backtracking
- *
- * Core Idea:
- * 1. Traverse the tree recursively.
- * 2. Add current node to path.
- * 3. If current node equals target → return true.
- * 4. Recursively search in left and right subtree.
- * 5. If neither subtree contains target,
- *    remove current node from path (backtrack).
- *
+ * ------------------------------------------------------------
  * Time Complexity: O(N)
- * - In worst case, we visit all nodes.
- *
- * Space Complexity: O(H)
- * - H = height of tree (recursion stack).
+ * Space Complexity:
+ *    Recursive → O(H)
+ *    BFS → O(N)
  */
 public class RootToNodePath {
 
-    public static void main(String[] args) {
+    // ==========================================================
+    // 1️⃣ BRUTE FORCE (Recursive DFS + Backtracking)
+    // ==========================================================
 
-        // Constructing sample binary tree
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
+    /**
+     * Public method to find root → target path using recursion.
+     *
+     * @param root   Root of binary tree
+     * @param target Target value
+     * @return List containing path from root to target
+     */
+    public static ArrayList<Integer> rootToNodeRecursive(TreeNode root, int target) {
 
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
+        ArrayList<Integer> path = new ArrayList<>();
+        if (root == null)
+            return path;
 
-        root.right.left = new TreeNode(6);
-        root.right.right = new TreeNode(7);
-
-        root.left.right.left = new TreeNode(8);
-        root.left.right.right = new TreeNode(9);
-
-        // Finding path to target node
-        ArrayList<Integer> result = solve(root, 7);
-
-        System.out.println(result);
+        findPath(root, target, path);
+        return path;
     }
 
     /**
-     * Recursive helper method to find path.
+     * Recursive helper method.
      *
-     * @param root  Current node
-     * @param list  Stores path from root to current node
-     * @param find  Target value to search
+     * Core Logic:
+     * 1. Add current node to path.
+     * 2. If node == target → return true.
+     * 3. Recurse left and right.
+     * 4. If target not found → remove node (backtrack).
      *
-     * @return true if target exists in subtree
+     * @return true if target found in subtree
      */
-    private static boolean getPath(TreeNode root,
-                                   ArrayList<Integer> list,
-                                   int find) {
+    private static boolean findPath(TreeNode root,
+                                    int target,
+                                    ArrayList<Integer> path) {
 
-        // Base Case: If node is null
-        if (root == null) {
+        if (root == null)
             return false;
-        }
 
-        // Add current node to path
-        list.add(root.data);
+        // Step 1: Add current node
+        path.add(root.data);
 
-        // If current node is target, stop recursion
-        if (root.data == find) {
+        // Step 2: Check target
+        if (root.data == target)
             return true;
-        }
 
-        // Recursively search left OR right subtree
-        if (getPath(root.left, list, find)
-                || getPath(root.right, list, find)) {
+        // Step 3: Search left or right
+        if (findPath(root.left, target, path) ||
+                findPath(root.right, target, path))
             return true;
-        }
 
-        // Backtracking step:
-        // If target not found in this path,
-        // remove current node from path
-        list.remove(list.size() - 1);
+        // Step 4: Backtrack if not found
+        path.remove(path.size() - 1);
 
         return false;
     }
 
+    // ==========================================================
+    // 2️⃣ BFS VERSION (Queue + Parent Map)
+    // ==========================================================
+
     /**
-     * Public method to initialize path list
-     * and start recursion.
+     * BFS approach using Queue.
      *
-     * @param root Root of binary tree
-     * @param find Target value
-     * @return List containing root-to-target path
+     * Instead of recursion, we:
+     * - Traverse tree level by level.
+     * - Store parent pointers.
+     * - Reconstruct path once target is found.
+     *
+     * @param root   Root of tree
+     * @param target Target value
+     * @return Path from root to target
      */
-    public static ArrayList<Integer> solve(TreeNode root, int find) {
+    public static ArrayList<Integer> rootToNodeBFS(TreeNode root, int target) {
 
-        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        if (root == null)
+            return result;
 
-        if (root == null) {
-            return list;
+        Queue<TreeNode> queue = new LinkedList<>();
+        Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+
+        queue.offer(root);
+        parentMap.put(root, null);
+
+        TreeNode targetNode = null;
+
+        // Level-order traversal
+        while (!queue.isEmpty()) {
+
+            TreeNode current = queue.poll();
+
+            if (current.data == target) {
+                targetNode = current;
+                break;
+            }
+
+            if (current.left != null) {
+                queue.offer(current.left);
+                parentMap.put(current.left, current);
+            }
+
+            if (current.right != null) {
+                queue.offer(current.right);
+                parentMap.put(current.right, current);
+            }
         }
 
-        getPath(root, list, find);
+        if (targetNode == null)
+            return result;
 
-        return list;
+        // Reconstruct path from target → root
+        while (targetNode != null) {
+            result.add(targetNode.data);
+            targetNode = parentMap.get(targetNode);
+        }
+
+        // Reverse to get root → target
+        Collections.reverse(result);
+
+        return result;
     }
 }

@@ -1,20 +1,22 @@
 package tree.medium;
 
-
 import tree.TreeNode;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Construct Binary Tree from Preorder and Postorder Traversals.
+ * Constructs a Binary Tree from Preorder and Postorder traversals.
  *
  * Problem Statement:
- * Given two integer arrays representing the preorder and postorder
- * traversal of a binary tree, construct and return the original tree.
+ * Given two integer arrays representing the preorder and postorder traversal
+ * of a binary tree, reconstruct and return the binary tree.
  *
- * Important Assumption:
- * A unique binary tree can be constructed only if the tree is a
- * Full Binary Tree (every node has either 0 or 2 children).
+ * Important:
+ * A unique tree can be reconstructed only when the tree is a Full Binary Tree
+ * (every node has either 0 or 2 children). Without this constraint,
+ * multiple trees may satisfy the same traversals.
  *
  * Traversal Definitions:
  *
@@ -24,49 +26,58 @@ import java.util.Map;
  * Postorder:
  * Left → Right → Root
  *
- * Algorithm Overview:
+ * Core Logic:
  * 1. The first element in preorder is always the root.
- * 2. The second element in preorder is the root of the left subtree.
- * 3. Locate this left subtree root in postorder.
- * 4. The index in postorder determines the size of the left subtree.
- * 5. Recursively construct left and right subtrees.
+ * 2. The next element in preorder represents the left subtree root.
+ * 3. Locate this left subtree root inside postorder.
+ * 4. The position of that node in postorder determines the size
+ *    of the left subtree.
+ * 5. Using subtree size, recursively construct left and right subtrees.
  *
- * Slicing Logic:
+ * Slicing Concept:
  *
- * Preorder Structure:
+ * Preorder structure:
  * [ Root | LeftSubtree | RightSubtree ]
  *
- * Postorder Structure:
+ * Postorder structure:
  * [ LeftSubtree | RightSubtree | Root ]
  *
- * If left subtree size is L:
+ * If left subtree contains L nodes:
  *
- * Left subtree in preorder:
- * (preStart + 1) to (preStart + L)
+ * Preorder:
+ *   Left subtree  -> preStart + 1  to preStart + L
+ *   Right subtree -> preStart + L + 1 to preEnd
  *
- * Right subtree in preorder:
- * (preStart + L + 1) to preEnd
- *
- * Left subtree in postorder:
- * postStart to indexOf(leftRoot)
- *
- * Right subtree in postorder:
- * indexOf(leftRoot) + 1 to postEnd - 1
+ * Postorder:
+ *   Left subtree  -> postStart to indexOf(leftRoot)
+ *   Right subtree -> indexOf(leftRoot) + 1 to postEnd - 1
  *
  * Time Complexity:
- * O(n) — Each node is processed exactly once.
+ * O(n)
+ * Each node is processed exactly once.
  *
  * Space Complexity:
- * O(n) — Recursion stack + HashMap storage.
+ * O(n)
+ * Recursion stack + HashMap for index lookup.
  */
 public class BinaryTreeFromPreorderAndPostorder {
 
+    public static void main(String[] args) {
+        int[] preorder = {1, 2, 4, 5, 3, 6, 7};
+        int[] postorder = {4, 5, 2, 6, 7, 3, 1};
+
+        TreeNode treeNode = buildTree(preorder, postorder);
+
+        List<Integer> list = preorderTraversal(treeNode);
+        System.out.println(list);
+    }
+
     /**
-     * Builds the binary tree from preorder and postorder arrays.
+     * Builds the binary tree using preorder and postorder arrays.
      *
      * @param preorder  preorder traversal array
      * @param postorder postorder traversal array
-     * @return root node of reconstructed tree
+     * @return root of reconstructed binary tree
      */
     public static TreeNode buildTree(int[] preorder, int[] postorder) {
 
@@ -84,15 +95,15 @@ public class BinaryTreeFromPreorderAndPostorder {
     }
 
     /**
-     * Recursive helper method to construct subtree.
+     * Recursive helper method to construct a subtree.
      *
      * @param preorder     preorder traversal array
-     * @param preStart     start index in preorder
-     * @param preEnd       end index in preorder
+     * @param preStart     start index in preorder window
+     * @param preEnd       end index in preorder window
      * @param postorder    postorder traversal array
-     * @param postStart    start index in postorder
-     * @param postEnd      end index in postorder
-     * @param postIndexMap value-to-index map for postorder
+     * @param postStart    start index in postorder window
+     * @param postEnd      end index in postorder window
+     * @param postIndexMap map for quick lookup of value index in postorder
      * @return root node of constructed subtree
      */
     private static TreeNode construct(
@@ -136,5 +147,29 @@ public class BinaryTreeFromPreorderAndPostorder {
         );
 
         return root;
+    }
+
+    /**
+     * Utility method to verify constructed tree using preorder traversal.
+     *
+     * @param root root node of tree
+     * @return list containing preorder traversal
+     */
+    public static List<Integer> preorderTraversal(TreeNode root) {
+
+        List<Integer> result = new ArrayList<>();
+        preorderHelper(root, result);
+        return result;
+    }
+
+    private static void preorderHelper(TreeNode root, List<Integer> list) {
+
+        if (root == null) {
+            return;
+        }
+
+        list.add(root.data);
+        preorderHelper(root.left, list);
+        preorderHelper(root.right, list);
     }
 }
